@@ -1,0 +1,30 @@
+{% extends "message/_base.html" %}
+
+{% block content %}
+    
+    {% if success == 1 %}
+    <div class="box">
+        <p>success</p>
+    </div>
+    {% endif %}
+
+    {% if error = 1 %}
+    <div class="box">
+        <p>error</p>
+    </div>
+    {% endif %}
+
+    <div class="box">
+        <h1>Message</h1>
+        <p>Drop us a line</p>
+
+        <form method="post" action="{% url message:home %}">
+            {% csrf_token %}
+            <p>{{ form.name }} <label for="id_name">Name</label></p>
+            <p>{{ form.mail }} <label for="id_mail">Email</label></p>
+            <p>{{ form.message }}</p>
+            <p class="button"><input type="submit" value="Send" /></p>
+        </form>
+    </div>
+
+{% endblock %}

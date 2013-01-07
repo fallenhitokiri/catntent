@@ -1,0 +1,11 @@
+{% extends "blog/_base.html" %}
+
+{% block content %}
+
+    {% for entry in entries %}
+    <div class="box">
+        {% include "blog/_content-short.html" %}
+    </div>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,10 @@
+[
+  {
+    "model": "navigation.navitem",
+    "pk": null,
+    "fields": {
+      "name": "Message",
+      "url": "/message/"
+    }
+  }
+]

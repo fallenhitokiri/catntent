@@ -4,28 +4,11 @@ import os
 import dj_database_url
 
 
-if os.environ['DEBUG'] == "True":
-    DEBUG = True
-else:
-    DEBUG = False
-
-
-TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
     (os.environ['ADMINNAME'], os.environ['ADMINMAIL'])
 )
 
 MANAGERS = ADMINS
-
-if DEBUG == True:
-    DATABASES = {
-        'default': dj_database_url.config(env='DB')
-    }
-else:
-    DATABASES = {
-        'default': dj_database_url.config()
-    }
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -131,12 +114,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'south',
+    'navigation',
+    'blog',
+    'message',
+    'pages',
 )
-
-if DEBUG == False:
-    INSTALLED_APPS += (
-        'gunicorn',
-    )
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -166,3 +148,38 @@ LOGGING = {
         },
     }
 }
+
+
+if os.environ['DEBUG'] == "True":
+    DEBUG = True
+
+    DATABASES = {
+        'default': dj_database_url.config(env='DB')
+    }
+
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
+
+    TEMPLATE_DEBUG = True
+
+    MIDDLEWARE_CLASSES += (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    )
+
+    DEBUG_TOOLBAR_CONFIG = {
+        'INTERCEPT_REDIRECTS': False
+    }
+
+    INTERNAL_IPS = ('127.0.0.1',)
+else:
+    DEBUG = False
+
+    DATABASES = {
+        'default': dj_database_url.config()
+    }
+
+    INSTALLED_APPS += (
+        'gunicorn',
+    )
+    TEMPLATE_DEBUG = False

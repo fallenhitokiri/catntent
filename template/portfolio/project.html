@@ -1,0 +1,38 @@
+{% extends "portfolio/_base.html" %}
+
+
+{% block content %}
+
+    <div class="intro">
+        <h1>{{ project.name }}</h1>
+        {% if project.jobs.all|length > 0%}
+        <p>
+            {% for job in project.jobs.all %}
+                {{ job.name }}{% if not forloop.last %}, {% endif%}
+            {% endfor %}
+        </p>
+        {% endif %}
+    </div>
+    
+    <p class="shot"><img src="{{ MEDIA_URL }}{{ project.intro }}" width="600" alt="{{ project.intro.name }}" /></p>
+    
+    {% for shot in project.shots.all %}
+        <p class="shot"><img src="{{ MEDIA_URL }}{{ shot }}" width="600" alt="{{ shot.name }}" /></p>
+    {% endfor %}
+
+    <div class="box">
+        {{ project.content|safe }}
+    </div>
+
+    {% if project.jobs.all|length > 0%}
+    <div class="box">
+        <h2>Technische Details</h2>
+        <ul>
+        {% for job in project.jobs.all %}
+            <li>{{ job.name }} <span>({{ job.tech.name }})</span></li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+{% endblock %}

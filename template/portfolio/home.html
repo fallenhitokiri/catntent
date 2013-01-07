@@ -1,0 +1,15 @@
+{% extends "portfolio/_base.html" %}
+
+{% block content %}
+    <h1>Portfolio</h1>
+    
+    {% for project in projects %}
+    <div class="box">
+        <p><a href="{{ project.get_absolute_url }}"><img src="{{ MEDIA_URL }}{{ project.intro }}" alt=" {{ project.intro.name }}" /></a></p>
+        <h2><a href="{{ project.get_absolute_url }}">{{ project.name }}</a></h2>
+        {{ project.short|safe }}
+    </div>
+    <!--box {{ project.name }}-->
+    {% endfor %}
+
+{% endblock %}

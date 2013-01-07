@@ -1,0 +1,23 @@
+{% if entry.ct == 'article' %}
+    <h1><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h1>
+    <p class="meta">geschrieben am {{ entry.added }}</p>
+    {{ entry.teaser|safe }}
+{% endif %}
+
+{% if entry.ct == 'note' %}
+    <h1><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h1>
+    <p class="meta">geschrieben am {{ entry.added }}</p>
+    {{ entry.content|safe }}
+{% endif %}
+
+{% if entry.ct == 'link' %}
+    <h1>[externer Link] <a href="{{ entry.url }}">{{ entry.title }}</a></h1>
+    <p class="meta">geschrieben am {{ entry.added }}</p>
+    {{ entry.content|safe }}
+{% endif %}
+
+{% if entry.ct == 'image' %}
+    <h1><a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a></h1>
+    <p class="meta">geschrieben am {{ entry.added }}</p>
+    <p><img src="{{ MEDIA_URL }}{{ entry.image }}" alt="{{ entry.image.name }}" width="540" height="300" /></p>
+{% endif %}

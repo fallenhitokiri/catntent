@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+
+{% load navigation_tags %}
+
+<html>
+
+    <head>
+        <title>development - catntent</title>
+
+        <meta charset="utf-8">
+
+        <link href="{{ STATIC_URL }}css/main.css" media="all" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+    
+        <div id="header">
+            <p>catntent</p>
+        </div>
+        <!--header-->
+        
+        <div id="sidebar">
+            <h4>Modules</h4>
+            {% navigation %}
+        </div>
+        <!--sidebar-->
+        
+        <div id="content">
+            {% block content %}<p>no content!</p>{% endblock %}
+        </div>
+        <!--content-->
+        
+        <div id="tags">
+            tags
+        </div>
+        <!--tags-->
+        
+        <div class="clearer"></div>
+                
+    </body>
+
+</html>

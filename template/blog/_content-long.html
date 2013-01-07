@@ -1,0 +1,16 @@
+{% if entry.ct == 'article' %}
+    {{ entry.teaser|safe }}
+    {{ entry.content|safe }}
+{% endif %}
+
+{% if entry.ct == 'note' %}
+    {{ entry.content|safe }}
+{% endif %}
+
+{% if entry.ct == 'link' %}
+    {{ entry.content|safe }}
+{% endif %}
+
+{% if entry.ct == 'image' %}
+    <p><a href="{{ MEDIA_URL }}{{ entry.image }}"><img src="{{ MEDIA_URL }}{{ entry.image }}" alt="{{ entry.image.name }}" width="540" height="300" /></a></p>
+{% endif %}

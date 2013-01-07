@@ -1,0 +1,12 @@
+{% extends "blog/_base.html" %}
+
+{% block content %}
+    
+    <div class="box">
+        <h1>{{ entry.title }}</h1>
+        <p>geschrieben am {{ entry.added }} von {{ entry.user.first_name }}</p>
+
+        {% include "blog/_content-long.html" %}
+    </div>
+
+{% endblock %}
