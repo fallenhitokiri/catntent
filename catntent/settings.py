@@ -118,6 +118,7 @@ INSTALLED_APPS = (
     'blog',
     'message',
     'pages',
+    'portfolio',
 )
 
 # A sample logging configuration. The only tangible logging

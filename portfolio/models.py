@@ -1,7 +1,8 @@
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User
 
-from markdown2 import markdown
+from utils.markup import markup
 
 
 class Tech(models.Model):
@@ -18,6 +19,7 @@ class Tech(models.Model):
 
 class Job(models.Model):
     name = models.CharField(max_length=100)
+    description = models.CharField(max_length=2000, blank=True, null=True)
     slug = models.SlugField(max_length=100, blank=True)
     tech = models.ForeignKey(Tech)
 
@@ -30,11 +32,26 @@ class Job(models.Model):
 
 
 class Shot(models.Model):
-    image = models.ImageField(upload_to="portfolio/")
+    image = models.ImageField(upload_to="portfolio/shots")
     description = models.CharField(max_length=1000)
 
     def __unicode__(self):
         return self.image.name
+
+
+class Testimonial(models.Model):
+    who = models.CharField(max_length=300)
+    company = models.CharField(max_length=300, blank=True, null=True)
+    logo = models.ImageField(upload_to="portfolio/logos")
+    statement_raw = models.TextField()
+    statement = models.TextField()
+
+    def __unicode__(self):
+        return "{0} {1}".format(self.who, self.company)
+
+    def save(self, *args, **kwargs):
+        self.statement = markup(self.statement_raw)
+        super(Testimonial, self).save(*args, **kwargs)
 
 
 class Project(models.Model):
@@ -42,15 +59,15 @@ class Project(models.Model):
     slug = models.SlugField(max_length=255, blank=True)
     added = models.DateTimeField(auto_now_add=True)
     url = models.URLField(blank=True, null=True, verify_exists=True)
-    intro = models.ImageField(upload_to="portfolio/")
-    short_raw = models.TextField()
-    short = models.TextField(blank=True)
-    content_raw = models.TextField()
-    content = models.TextField(blank=True)
-    testimonial_raw = models.TextField(blank=True, null=True)
-    testimonial = models.TextField(blank=True, null=True)
-    jobs = models.ManyToManyField(Job)
-    shots = models.ManyToManyField(Shot)
+    intro = models.ImageField(upload_to="portfolio/intros")
+    summary_raw = models.TextField()
+    summery = models.TextField(blank=True)
+    description_raw = models.TextField()
+    description = models.TextField(blank=True)
+    jobs = models.ManyToManyField(Job, blank=True, null=True, related_name='project')
+    shots = models.ManyToManyField(Shot, blank=True, null=True, related_name='project')
+    testimonial = models.ForeignKey(Testimonial, blank=True, null=True, related_name='project')
+    user = models.ForeignKey(User, blank=True, null=True, related_name='projects')
 
     class Meta:
         ordering = ['-added']
@@ -60,8 +77,8 @@ class Project(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        self.short = markdown(self.short_raw)
-        self.content = markdown(self.content_raw)
+        self.summary_raw = markup(self.summery_raw)
+        self.description = markup(self.description_raw)
         super(Project, self).save(*args, **kwargs)
 
     @models.permalink

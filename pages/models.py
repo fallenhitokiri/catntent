@@ -5,10 +5,9 @@ from django.template.defaultfilters import slugify
 from django.db.models.signals import post_save, pre_delete
 from django.contrib.contenttypes.models import ContentType
 
-from markdown2 import markdown
-
 from managers.published import PubManager
 from navigation.models import NavItem
+from utils.markup import markup
 
 
 class Page(models.Model):
@@ -34,7 +33,7 @@ class Page(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        self.content = markdown(self.content_raw)
+        self.content = markup(self.content_raw)
         super(Page, self).save(*args, **kwargs)
 
     @models.permalink

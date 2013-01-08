@@ -6,9 +6,8 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 
-from markdown2 import markdown
-
 from managers.published import PubManager
+from utils.markup import markup
 
 
 class Entry(models.Model):
@@ -147,8 +146,8 @@ class Article(Base):
 
     def save(self, *args, **kwargs):
         """run teaser and content markup"""
-        self.teaser = markdown(self.teaser_raw)
-        self.content = markdown(self.content_raw)
+        self.teaser = markup(self.teaser_raw)
+        self.content = markup(self.content_raw)
         super(Article, self).save(*args, **kwargs)
 
 
@@ -158,7 +157,7 @@ class Note(Base):
 
     def save(self, *args, **kwargs):
         """run content markup"""
-        self.content = markdown(self.content_raw)
+        self.content = markup(self.content_raw)
         super(Note, self).save(*args, **kwargs)
 
 
@@ -169,7 +168,7 @@ class Link(Base):
 
     def save(self, *args, **kwargs):
         """run content markup"""
-        self.content = markdown(self.content_raw)
+        self.content = markup(self.content_raw)
         super(Link, self).save(*args, **kwargs)
 
 
@@ -180,7 +179,7 @@ class Picture(Base):
 
     def save(self, *args, **kwargs):
         """run content markup"""
-        self.content = markdown(self.content_raw)
+        self.content = markup(self.content_raw)
         super(Picture, self).save(*args, **kwargs)
 
 
