@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
+
 
 def markdown(text):
     from markdown2 import markdown
@@ -7,4 +9,7 @@ def markdown(text):
 
 def markup(text):
     """convert text to html"""
-    return markdown(text)
+    if settings.MARKUP == "markdown":
+        return markdown(text)
+    if settings.MARKUP == "html":
+        return text

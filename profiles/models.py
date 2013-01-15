@@ -2,7 +2,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from utils.markup import markup
+from common.utils.markup import markup
+from utils import normalize_username
 
 
 class SocialMedia(models.Model):
@@ -16,6 +17,16 @@ class SocialMedia(models.Model):
 
     def __unicode__(self):
         return self.username
+
+    def save(self, *args, **kwargs):
+        self.username = normalize_username(self.service, self.username)
+        super(SocialMedia, self).save(*args, **kwargs)
+
+    def get_twitter_url(self):
+        return "https://twitter.com/{0}".format(self.username)
+
+    def get_facebook_url(self):
+        return "https://www.facebook.com/{0}".format(self.username)
 
 
 class Profile(models.Model):

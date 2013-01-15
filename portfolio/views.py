@@ -7,7 +7,7 @@ from portfolio.models import Project
 def home(request):
     ci = RequestContext(request)
     tmpl = {
-        'projects': Project.objects.all()
+        'projects': Project.public.all()
     }
     return render_to_response('portfolio/home.html', tmpl, ci)
 
@@ -15,6 +15,6 @@ def home(request):
 def project(request, id, slug):
     ci = RequestContext(request)
     tmpl = {
-        'project': get_object_or_404(Project, id=id)
+        'project': get_object_or_404(Project.public, id=id)
     }
     return render_to_response('portfolio/project.html', tmpl, ci)

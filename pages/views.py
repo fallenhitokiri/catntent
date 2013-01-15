@@ -8,7 +8,7 @@ def index(request):
     '''option for default index page - not implemented'''
     ci = RequestContext(request)
     tmpl = {
-        'content': get_object_or_404(Page, name="index")
+        'content': get_object_or_404(Page.public, name="index")
     }
     return render_to_response('pages/index.html', tmpl, ci)
 
@@ -16,6 +16,6 @@ def index(request):
 def page(request, id, slug):
     ci = RequestContext(request)
     tmpl = {
-        'content': get_object_or_404(Page, id=id)
+        'content': get_object_or_404(Page.public, id=id)
     }
     return render_to_response('pages/page.html', tmpl, ci)

@@ -13,17 +13,17 @@ def home(request):
     return render_to_response('blog/home.html', tmpl, ci)
 
 
-def entry(request, id, slug):
-    ci = RequestContext(request)
-    tmpl = {
-        'entry': get_object_or_404(Entry.public, id=id)
-    }
-    return render_to_response('blog/entry.html', tmpl, ci)
-
-
 def archive(request):
     ci = RequestContext(request)
     tmpl = {
         'entries': Entry.public.all()
     }
     return render_to_response('blog/archive.html', tmpl, ci)
+
+
+def entry(request, id, slug):
+    ci = RequestContext(request)
+    tmpl = {
+        'entry': get_object_or_404(Entry.public, id=id)
+    }
+    return render_to_response('blog/entry.html', tmpl, ci)

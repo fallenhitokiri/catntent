@@ -6,8 +6,8 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 
-from managers.published import PubManager
-from utils.markup import markup
+from common.managers.published import PubManager
+from common.utils.markup import markup
 
 
 class Entry(models.Model):

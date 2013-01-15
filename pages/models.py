@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.db.models.signals import post_save, pre_delete
 
-from managers.published import PubManager
+from common.managers.published import PubManager
+from common.utils.markup import markup
 from navigation.signals import update_navigation, delete_navigation
-from utils.markup import markup
 
 
 class Page(models.Model):

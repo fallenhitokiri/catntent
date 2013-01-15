@@ -185,3 +185,5 @@ else:
         'gunicorn',
     )
     TEMPLATE_DEBUG = False
+
+MARKUP = os.environ['MARKUP']

@@ -2,7 +2,8 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-from utils.markup import markup
+from common.utils.markup import markup
+from common.managers.published import PubManager
 
 
 class Tech(models.Model):
@@ -80,6 +81,8 @@ class Project(models.Model):
     jobs = models.ManyToManyField(Job, blank=True, null=True, related_name='project')
     shots = models.ManyToManyField(Shot, blank=True, null=True, related_name='project')
     user = models.ForeignKey(User, blank=True, null=True, related_name='projects')
+    objects = models.Manager()
+    public = PubManager()
 
     class Meta:
         ordering = ['-added']
