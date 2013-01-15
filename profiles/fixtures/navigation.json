@@ -1,0 +1,11 @@
+[
+  {
+    "model": "navigation.navitem",
+    "pk": null,
+    "fields": {
+      "name": "Profiles",
+      "url": "/profiles/",
+      "mainnav": true
+    }
+  }
+]

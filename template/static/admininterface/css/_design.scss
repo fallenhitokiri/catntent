@@ -1,0 +1,161 @@
+/******************************************************************************
+* fonts                                                                       *
+******************************************************************************/
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,800,600|Open+Sans+Condensed:300,700);
+
+
+/******************************************************************************
+* defaults                                                                    *
+******************************************************************************/
+.clearer { clear:both; }
+
+html { height:100%; }
+
+body {
+    height:100%;
+    font-family:Open Sans;
+    font-weight:400;
+    font-size:0.9em;
+    line-height:1.6em;
+    color:$dark;
+    background:url('bg-body.png');
+}
+
+h1 {
+    font-weight:bold;
+    margin:1em 0 1em 0;
+}
+
+a {
+    color:$dark;
+    text-decoration: none;
+}
+
+a:hover {
+    color:$red;
+}
+
+h1 i, a i {
+    margin:0 0.5em 0 0;
+}
+
+/******************************************************************************
+* module                                                                      *
+******************************************************************************/
+#modules {
+    width:150px;
+    height:100%;
+    float:left;
+    background:$dark;
+    @include insertboxshadow(-3px, 0, 6px, -3px, 0, 0, 0, 1);
+
+    #logo {
+        text-align:center;
+        color:$white;
+        padding:5em 0 5em;
+    }
+
+    a {
+        display:block;
+        width:150px;
+        padding:0.5em 0 0.5em 0;
+        text-align:center;
+        color:$grey3;
+        text-decoration: none;
+        margin:0 0 0.5em 0;
+    }
+
+    .active {
+        background:url('bg-menu.png');
+        color:$dark;
+    }
+
+    a:hover {
+        color:$white;
+    }
+
+
+    .active:hover {
+        color:$dark;
+    }
+}
+
+/******************************************************************************
+* menu                                                                        *
+******************************************************************************/
+#menu {
+    width:250px;
+    height:100%;
+    float:left;
+    background:url('bg-menu.png');
+    @include insertboxshadow(-3px, 0, 6px, -3px, 0, 0, 0, 0.1);
+
+    h1 {
+        padding:0 0 0 1em;
+    }
+
+    p {
+        padding:0 0 0 1em;
+        color:$grey3;
+        margin:0 0 2em 0;
+    }
+
+    a {
+        display:block;
+        width:250px;
+        padding:0.5em 0 0.5em 1em;
+        color:$grey3;
+        text-decoration: none;
+        margin:0 0 0.5em 0;
+    }
+
+    .active {
+        background:url('bg-body.png');
+        color:$dark;
+    }
+
+    a:hover {
+        color:$dark;
+    }
+
+
+    .active:hover {
+        color:$dark;
+    }
+}
+
+/******************************************************************************
+* content                                                                     *
+******************************************************************************/
+#content {
+    width:600px;
+    float:left;
+    padding:0 0 0 2em;
+
+    p {
+        margin:0 0 1.5em 0;
+    }
+
+    .objectlist {
+        @include boxshadow(0, 0, 5px, -1px, 0, 0, 0, 0.4);
+        @include borderradius(3px, 3px, 3px, 3px);
+
+        a {
+            display:block;
+            padding:0.4em 0 0.4em 1em;
+        }
+
+        i {
+            float:right;
+            padding:0.3em 1em 0 0;
+        }
+
+        li {
+            background:$grey2;
+        }
+
+        .uneven {
+            background:$grey1;
+        }
+    }
+}
