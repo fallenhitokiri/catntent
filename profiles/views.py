@@ -1,17 +1,20 @@
 from django.template import RequestContext
-from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, get_object_or_404
+
+from profiles.models import Profile
 
 
 def home(request):
     ci = RequestContext(request)
-    tmpl = {}
+    tmpl = {
+        'profiles': Profile.objects.all()
+    }
     return render_to_response('profiles/home.html', tmpl, ci)
 
 
-def detail(request, id, last_name, first_name):
+def profile(request, id, last_name, first_name):
     ci = RequestContext(request)
     tmpl = {
-        'user': get_object_or_404(User, id=id, last_name=last_name, first_name=first_name)
+        'profile': get_object_or_404(Profile, id=id)
     }
-    return render_to_response('profile/detail.html', tmpl, ci)
+    return render_to_response('profiles/profile.html', tmpl, ci)

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
 from portfolio.models import Tech, Job, Shot, Testimonial, Customer, Project
 

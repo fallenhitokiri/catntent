@@ -1,0 +1,14 @@
+{% extends "profiles/_base.html" %}
+
+{% block content %}
+
+    <div class="box">
+        <h1>Profiles</h1>
+        <ul>
+        {% for profile in profiles %}
+            <li><a href="{{ profile.get_absolute_url }}">{{ profile }}</a> - {{ profile.short }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}

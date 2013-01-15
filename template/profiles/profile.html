@@ -1,0 +1,18 @@
+{% extends "profiles/_base.html" %}
+
+{% block content %}
+
+    <div class="box">
+        <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
+        <h6>{{ profile.title }}</h6>
+        <p><img src="{{ MEDIA_URL }}{{ profile.picture }}" /></p>
+        <p>{{ profile.about|safe }}</p>
+        <h4>Social Media</h4>
+        <ul>
+        {% for service in profile.social.all %}
+            <li>{{ service.username }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
