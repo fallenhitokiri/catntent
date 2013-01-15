@@ -14,14 +14,12 @@
         {% endif %}
     </div>
     
-    <p class="shot"><img src="{{ MEDIA_URL }}{{ project.intro }}" width="600" alt="{{ project.intro.name }}" /></p>
-    
     {% for shot in project.shots.all %}
         <p class="shot"><img src="{{ MEDIA_URL }}{{ shot }}" width="600" alt="{{ shot.name }}" /></p>
     {% endfor %}
 
     <div class="box">
-        {{ project.content|safe }}
+        {{ project.description|safe }}
     </div>
 
     {% if project.jobs.all|length > 0%}
@@ -32,6 +30,14 @@
             <li>{{ job.name }} <span>({{ job.tech.name }})</span></li>
         {% endfor %}
         </ul>
+    </div>
+    {% endif %}
+
+    {% if project.customer.testimonial %}
+    <div class="box">
+        <h2>Testimonial</h2>
+        {{ project.customer.testimonial.statement|safe }}
+        <p>by: {{ project.customer.contact }} ({{ project.customer.title }})</p>
     </div>
     {% endif %}
 

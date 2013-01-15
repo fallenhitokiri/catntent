@@ -19,11 +19,15 @@ class Entry(models.Model):
     object_id = models.PositiveIntegerField()
     added = models.DateTimeField()
     published = models.BooleanField()
-    slug = models.SlugField(max_length=255, blank=True, null=True)
+    slug = models.SlugField(max_length=255, blank=True)
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     user = models.ForeignKey(User, blank=True, null=True, related_name="entries")
     objects = models.Manager()
     public = PubManager()
+
+    class Meta:
+        ordering = ['-added']
+        get_latest_by = "added"
 
     def __unicode__(self):
         return self.content_object.title
@@ -97,8 +101,8 @@ class Category(models.Model):
 
 
 class Attachment(models.Model):
-    title = models.CharField(max_length=200, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True)
+    description = models.TextField(blank=True)
     added = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, blank=True, null=True, related_name="%(class)s")
 
@@ -119,7 +123,7 @@ class Base(models.Model):
     added = models.DateTimeField(auto_now_add=True)
     changed = models.DateTimeField(auto_now=True)
     published = models.BooleanField(default=True)
-    slug = models.SlugField(max_length=255, blank=True, null=True)
+    slug = models.SlugField(max_length=255, blank=True)
     tags = models.ManyToManyField(Tag, related_name="%(class)s_tag", blank=True, null=True)
     categories = models.ManyToManyField(Category, related_name="%(class)s_categories", blank=True, null=True)
     user = models.ForeignKey(User, blank=True, null=True)
@@ -138,8 +142,8 @@ class Base(models.Model):
 
 
 class Article(Base):
-    teaser_raw = models.TextField(blank=True, null=True)
-    teaser = models.TextField(blank=True, null=True)
+    teaser_raw = models.TextField(blank=True)
+    teaser = models.TextField(blank=True)
     content_raw = models.TextField()
     content = models.TextField(blank=True)
     images = models.ManyToManyField(ImageAttachment, blank=True, null=True, related_name='images')
@@ -163,8 +167,8 @@ class Note(Base):
 
 class Link(Base):
     url = models.URLField(blank=True, verify_exists=True)
-    content_raw = models.TextField(blank=True, null=True)
-    content = models.TextField(blank=True, null=True)
+    content_raw = models.TextField(blank=True)
+    content = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         """run content markup"""
@@ -174,8 +178,8 @@ class Link(Base):
 
 class Picture(Base):
     image = models.ImageField(upload_to="blog/picture")
-    content_raw = models.TextField(blank=True, null=True)
-    content = models.TextField(blank=True, null=True)
+    content_raw = models.TextField(blank=True)
+    content = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         """run content markup"""

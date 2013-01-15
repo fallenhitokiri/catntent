@@ -5,3 +5,4 @@ venv
 *~
 *.swp
 *migration*
+*.sass-cache*

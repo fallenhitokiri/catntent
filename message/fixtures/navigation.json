@@ -4,7 +4,8 @@
     "pk": null,
     "fields": {
       "name": "Message",
-      "url": "/message/"
+      "url": "/message/",
+      "mainnav": true
     }
   }
 ]

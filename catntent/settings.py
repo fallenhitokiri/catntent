@@ -119,6 +119,7 @@ INSTALLED_APPS = (
     'message',
     'pages',
     'portfolio',
+    'profiles',
 )
 
 # A sample logging configuration. The only tangible logging
