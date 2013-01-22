@@ -12,6 +12,6 @@ urlpatterns = patterns('',
     url(r'^portfolio/', include('portfolio.urls', namespace="portfolio")),
     url(r'^profiles/', include('profiles.urls', namespace="profiles")),
 
-    url(r'^unicorn/', include(admin.site.urls)),
-    url(r'^admin/', include('admininterface.urls', namespace="admininterface")),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^dashboard/', include('dashboard.urls', namespace="dashboard")),
 )

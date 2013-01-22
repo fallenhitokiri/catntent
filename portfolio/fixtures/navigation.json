@@ -4,8 +4,7 @@
     "pk": null,
     "fields": {
       "name": "Portfolio",
-      "url": "/portfolio/",
-      "mainnav": true
+      "url": "/portfolio/"
     }
   }
 ]

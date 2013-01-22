@@ -11,6 +11,6 @@
     {{ entry.content|safe }}
 {% endif %}
 
-{% if entry.ct == 'image' %}
+{% if entry.ct == 'picture' %}
     <p><a href="{{ MEDIA_URL }}{{ entry.image }}"><img src="{{ MEDIA_URL }}{{ entry.image }}" alt="{{ entry.image.name }}" width="540" height="300" /></a></p>
 {% endif %}

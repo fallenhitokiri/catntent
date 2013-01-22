@@ -29,10 +29,6 @@ def update_navigation(sender, **kwargs):
             navitem = NavItem.objects.get_or_create(content_type=ctype, object_id=instance.id)[0]
             navitem.name = instance.name
             navitem.url = instance.get_absolute_url()
-
-            if instance.parent == None:
-                navitem.mainnav = True
-
             navitem.save()
         else:
             delete_navitem(instance)

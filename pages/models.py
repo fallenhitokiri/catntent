@@ -9,6 +9,14 @@ from common.utils.markup import markup
 from navigation.signals import update_navigation, delete_navigation
 
 
+class Image(models.Model):
+    image = models.ImageField(upload_to="pages/")
+    description = models.CharField(max_length=2000, blank=True)
+
+    def __unicode__(self):
+        self.image
+
+
 class Page(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, blank=True, unique=True)
@@ -21,6 +29,7 @@ class Page(models.Model):
     user = models.ForeignKey(User, blank=True, null=True)
     parent = models.ForeignKey("self", blank=True, null=True, related_name="children")
     hidden = models.BooleanField(default=False)
+    images = models.ManyToManyField(Image, blank=True, null=True)
     objects = models.Manager()
     public = PubManager()
 

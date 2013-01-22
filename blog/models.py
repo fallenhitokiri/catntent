@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete, m2m_changed
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 
@@ -10,8 +10,54 @@ from common.managers.published import PubManager
 from common.utils.markup import markup
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(blank=True, unique=True)
+    count = models.PositiveIntegerField(default=0)
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Tag, self).save(*args, **kwargs)
+
+    @models.permalink
+    def get_absolute_url(self):
+        """absolute url for entry -> based on id and slug"""
+        details = {
+            'id': self.id,
+            'slug': self.slug
+        }
+        return ('blog:tag_archive', (), details)
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(blank=True, unique=True)
+    count = models.PositiveIntegerField(default=0)
+
+    def __unicode__(self):
+        """title as name"""
+        return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
+
+    @models.permalink
+    def get_absolute_url(self):
+        """absolute url for entry -> based on id and slug"""
+        details = {
+            'id': self.id,
+            'slug': self.slug
+        }
+        return ('blog:category_archive', (), details)
+
+
 class Entry(models.Model):
-    """Entry Model for various blog post types
+    """
+    Entry Model for various blog post types
 
     only this model will be queried
     """
@@ -73,31 +119,6 @@ class Entry(models.Model):
     def ct(self):
         """return content type as string for template propose"""
         return str(self.content_type)
-
-
-class Tag(models.Model):
-    title = models.CharField(max_length=200, unique=True)
-    slug = models.SlugField(blank=True, unique=True)
-
-    def __unicode__(self):
-        return self.title
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super(Tag, self).save(*args, **kwargs)
-
-
-class Category(models.Model):
-    title = models.CharField(max_length=200, unique=True)
-    slug = models.SlugField(blank=True, unique=True)
-
-    def __unicode__(self):
-        """title as name"""
-        return self.title
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super(Category, self).save(*args, **kwargs)
 
 
 class Attachment(models.Model):
@@ -166,7 +187,7 @@ class Note(Base):
 
 
 class Link(Base):
-    url = models.URLField(blank=True, verify_exists=True)
+    url = models.URLField(verify_exists=True)
     content_raw = models.TextField(blank=True)
     content = models.TextField(blank=True)
 
@@ -187,30 +208,88 @@ class Picture(Base):
         super(Picture, self).save(*args, **kwargs)
 
 
-def create_entry(sender, **kwargs):
-    """if a new post is made, create or update entry model"""
+"""
+Signals to add, update or remove entries (Entry) to reflect posts
+"""
+
+
+def add_entry(instance):
+    ctype = ContentType.objects.get_for_model(instance)
+    entry, created = Entry.objects.get_or_create(content_type=ctype,
+                                                 object_id=instance.id,
+                                                 added=instance.added,
+                                                 published=instance.published,
+                                                 slug=instance.slug,
+                                                 user=instance.user)
+    instance.save()
+
+
+def update_entry(instance):
+    ctype = ContentType.objects.get_for_model(instance)
+    entry = Entry.objects.get(content_type=ctype,
+                              object_id=instance.id)
+    entry.published = instance.published
+    entry.save()
+
+
+def remove_entry(instance):
+    try:
+        ctype = ContentType.objects.get_for_model(instance)
+        entry = Entry.objects.get(content_type=ctype, object_id=instance.id)
+        entry.delete()
+    except Entry.DoesNotExist:
+        pass
+
+
+def post_added(sender, **kwargs):
+    """signal for create / update"""
     if 'created' in kwargs:
         if kwargs['created']:
-            # new entry created
-            instance = kwargs['instance']
-            ctype = ContentType.objects.get_for_model(instance)
-            entry = Entry.objects.get_or_create(content_type=ctype,
-                                                object_id=instance.id,
-                                                added=instance.added,
-                                                published=instance.published,
-                                                slug=instance.slug,
-                                                user=instance.user)
+            add_entry(kwargs['instance'])
         else:
-            # updated entry
-            instance = kwargs['instance']
-            ctype = ContentType.objects.get_for_model(instance)
-            entry = Entry.objects.get(content_type=ctype,
-                                      object_id=instance.id)
-            entry.published = instance.published
-            entry.save()
+            update_entry(kwargs['instance'])
 
 
-post_save.connect(create_entry, sender=Article)
-post_save.connect(create_entry, sender=Note)
-post_save.connect(create_entry, sender=Link)
-post_save.connect(create_entry, sender=Picture)
+def post_deleted(sender, **kwargs):
+    """delete navigation item if is deleted"""
+    remove_entry(kwargs['instance'])
+
+
+def increment_count(model, ids):
+    for cur_id in ids:
+        mod = model.objects.get(id=cur_id)
+        mod.count = mod.count + 1
+        mod.save()
+
+
+def decrement_count(model, ids):
+    for cur_id in ids:
+        mod = model.objects.get(id=cur_id)
+        mod.count = mod.count - 1
+        mod.save()
+
+
+def update_count(sender, model, pk_set, **kwargs):
+    """update tag and category count"""
+    if kwargs['action'] == "post_add":
+        increment_count(model, pk_set)
+    if kwargs['action'] == "post_remove":
+        """
+        a bug in django currently prevents this from working
+        see bug 6707
+        """
+        decrement_count(model, pk_set)
+
+
+post_save.connect(post_added, sender=Article)
+post_save.connect(post_added, sender=Note)
+post_save.connect(post_added, sender=Link)
+post_save.connect(post_added, sender=Picture)
+pre_delete.connect(post_deleted, sender=Article)
+pre_delete.connect(post_deleted, sender=Note)
+pre_delete.connect(post_deleted, sender=Link)
+pre_delete.connect(post_deleted, sender=Picture)
+m2m_changed.connect(update_count, sender=Article.tags.through)
+m2m_changed.connect(update_count, sender=Note.tags.through)
+m2m_changed.connect(update_count, sender=Link.tags.through)
+m2m_changed.connect(update_count, sender=Picture.tags.through)

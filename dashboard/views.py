@@ -8,4 +8,4 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     ci = RequestContext(request)
     tmpl = {}
-    return render_to_response('admininterface/home.html', tmpl, ci)
+    return render_to_response('dashboard/home.html', tmpl, ci)

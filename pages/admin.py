@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from pages.models import Page
+from pages.models import Page, Image
+
+
+class DefaultAdmin(admin.ModelAdmin):
+    pass
 
 
 class PageAdmin(admin.ModelAdmin):
@@ -10,5 +14,7 @@ class PageAdmin(admin.ModelAdmin):
         obj.user = request.user
         obj.save()
 
+
+admin.site.register(Image, DefaultAdmin)
 
 admin.site.register(Page, PageAdmin)

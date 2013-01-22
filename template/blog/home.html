@@ -2,10 +2,30 @@
 
 {% block content %}
 
-    {% for entry in entries %}
+    {% for entry in entries.object_list %}
     <div class="box">
         {% include "blog/_content-short.html" %}
     </div>
     {% endfor %}
+
+    <div class="box">
+        <ul>
+        {% if entries.has_previous %}
+            <li><a href="?page={{ entries.previous_page_number }}">Previous</a></li>
+        {% endif %}
+
+        {% for page in entries.paginator.page_range %}
+            {% if page == entries.number %}
+                <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
+            {% else %}
+                <li><a href="?page={{ page }}">{{ page }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if entries.has_next %}
+            <li><a href="?page={{ entries.next_page_number }}">Next</a></li>
+        {% endif %}
+        </ul>
+    </div>
 
 {% endblock %}

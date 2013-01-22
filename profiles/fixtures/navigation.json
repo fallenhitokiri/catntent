@@ -4,8 +4,7 @@
     "pk": null,
     "fields": {
       "name": "Profiles",
-      "url": "/profiles/",
-      "mainnav": true
+      "url": "/profiles/"
     }
   }
 ]

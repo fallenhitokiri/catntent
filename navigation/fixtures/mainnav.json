@@ -1,0 +1,9 @@
+[
+  {
+    "model": "navigation.navigation",
+    "pk": null,
+    "fields": {
+      "name": "main"
+    }
+  }
+]

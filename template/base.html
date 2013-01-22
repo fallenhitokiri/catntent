@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 
 {% load navigation_tags %}
+{% load category_tags %}
 
 <html>
 
@@ -21,7 +22,7 @@
         
         <div id="sidebar">
             <h4>Modules</h4>
-            {% mainnavigation %}
+            {% navigation "main" %}
         </div>
         <!--sidebar-->
         
@@ -31,7 +32,10 @@
         <!--content-->
         
         <div id="tags">
-            tags
+            <h4>Blog-Category</h4>
+            {% categories %}
+            <h4>Blog-Tags</h4>
+            {% tags %}
         </div>
         <!--tags-->
         
