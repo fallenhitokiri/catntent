@@ -7,6 +7,15 @@
         <p>geschrieben am {{ entry.added }} von {{ entry.user.first_name }}</p>
 
         {% include "blog/_content-long.html" %}
+
+        <p>Tags: {% for tag in entry.tags.all %}
+            <a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}</p>
+        <p>Categories: {% for category in entry.categories.all %}
+            <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}</p>
     </div>
 
 {% endblock %}

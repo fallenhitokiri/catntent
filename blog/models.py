@@ -29,7 +29,7 @@ class Tag(models.Model):
             'id': self.id,
             'slug': self.slug
         }
-        return ('blog:tag_archive', (), details)
+        return ('blog:tag', (), details)
 
 
 class Category(models.Model):
@@ -52,7 +52,7 @@ class Category(models.Model):
             'id': self.id,
             'slug': self.slug
         }
-        return ('blog:category_archive', (), details)
+        return ('blog:category', (), details)
 
 
 class Entry(models.Model):
@@ -146,8 +146,9 @@ class Base(models.Model):
     published = models.BooleanField(default=True)
     slug = models.SlugField(max_length=255, blank=True)
     tags = models.ManyToManyField(Tag, related_name="%(class)s_tag", blank=True, null=True)
-    categories = models.ManyToManyField(Category, related_name="%(class)s_categories", blank=True, null=True)
+    categories = models.ManyToManyField(Category, related_name="%(class)s_category", blank=True, null=True)
     user = models.ForeignKey(User, blank=True, null=True)
+    entry = generic.GenericRelation(Entry)
 
     class Meta:
         abstract = True
@@ -285,10 +286,12 @@ post_save.connect(post_added, sender=Article)
 post_save.connect(post_added, sender=Note)
 post_save.connect(post_added, sender=Link)
 post_save.connect(post_added, sender=Picture)
+
 pre_delete.connect(post_deleted, sender=Article)
 pre_delete.connect(post_deleted, sender=Note)
 pre_delete.connect(post_deleted, sender=Link)
 pre_delete.connect(post_deleted, sender=Picture)
+
 m2m_changed.connect(update_count, sender=Article.tags.through)
 m2m_changed.connect(update_count, sender=Note.tags.through)
 m2m_changed.connect(update_count, sender=Link.tags.through)

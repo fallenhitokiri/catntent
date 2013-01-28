@@ -1,6 +1,8 @@
 {% extends "blog/_base.html" %}
 
 {% block content %}
+    
+    {% block browsing %}{% endblock %}
 
     {% for entry in entries.object_list %}
     <div class="box">

@@ -6,7 +6,7 @@ from navigation.models import Navigation
 register = template.Library()
 
 
-@register.inclusion_tag('tags/navigation/main-navigation.html')
+@register.inclusion_tag('navigation/template-tags/navigation.html')
 def navigation(name):
     navigation = Navigation.objects.get(name=name)
     items = navigation.items.all()
