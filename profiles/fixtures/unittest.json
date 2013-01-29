@@ -1,0 +1,1 @@
+[{"pk": 1, "model": "profiles.socialmedia", "fields": {"username": "fallenhitokiri", "service": "T"}}, {"pk": 1, "model": "profiles.profile", "fields": {"picture": "profiles/5091775_700b.jpg", "first_name": "Example", "short": "short", "title": "title", "about": "<p>about</p>\n", "about_raw": "about", "last_name": "Admin", "user": 1, "social": [1]}}]
