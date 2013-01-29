@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from operator import attrgetter
+from itertools import chain
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -31,17 +32,9 @@ def _merge_query_sets(articles, notes, links, pictures):
     # merged = list(chain(articles, notes, links, pictures)) -> skip Entry?
     entries = []
 
-    for article in articles:
-        entries.append(article.entry.all()[0])
-
-    for note in notes:
-        entries.append(note.entry.all()[0])
-
-    for link in links:
-        entries.append(link.entry.all()[0])
-
-    for picture in pictures:
-        entries.append(picture.entry.all()[0])
+    for item in list(chain(articles, notes, links, pictures)):
+        if item.published is True:
+            entries.append(item.entry.all()[0])
 
     entries = sorted(entries, key=attrgetter('added'))
     return entries
