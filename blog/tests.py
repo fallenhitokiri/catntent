@@ -5,16 +5,16 @@ from blog.models import Article, Note, Link, Picture, Entry
 
 
 class ModelTestCase(TestCase):
-    fixtures = ['test_data', 'navigation']
+    fixtures = ['unittest']
 
     def setUp(self):
         """
         Entries in DB
         [4]: Article
-        [3]: Artilce
-        [2]: Note
-        [1]: Link
-        [0]: Picture
+        [3]: Note
+        [2]: Link
+        [1]: Picture
+        [0]: Article
         """
         self.entries = Entry.objects.all()
         self.article = Article.objects.all()[0]
@@ -30,7 +30,7 @@ class ModelTestCase(TestCase):
         self.assertEqual(self.note.content, "<p>content</p>\n")
 
     def test_link(self):
-        self.assertEqual(self.link.url, "www.screamingatmyscreen.com")
+        self.assertEqual(self.link.url, "http://www.screamingatmyscreen.com/")
         self.assertEqual(self.link.content, "<p>content</p>\n")
 
     def test_pictue(self):
@@ -39,8 +39,8 @@ class ModelTestCase(TestCase):
     def test_entry(self):
         self.assertEqual(self.entries[4].slug, "test-article")
         self.assertEqual(self.entries[4].published, True)
-        self.assertEqual(self.entries[3].slug, "test-article-2")
-        self.assertEqual(self.entries[3].published, False)
-        self.assertEqual(self.entries[2].slug, "test-note")
-        self.assertEqual(self.entries[1].slug, "test-link")
-        self.assertEqual(self.entries[0].slug, "test-picture")
+        self.assertEqual(self.entries[3].slug, "test-note")
+        self.assertEqual(self.entries[2].slug, "test-link")
+        self.assertEqual(self.entries[1].slug, "test-picture")
+        self.assertEqual(self.entries[0].slug, "unpublished-article")
+        self.assertEqual(self.entries[0].published, False)

@@ -14,7 +14,7 @@ class Image(models.Model):
     description = models.CharField(max_length=2000, blank=True)
 
     def __unicode__(self):
-        self.image
+        return self.image.name
 
 
 class Page(models.Model):

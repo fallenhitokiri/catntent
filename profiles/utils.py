@@ -8,6 +8,6 @@ def normalize_twitter(username):
         return username
 
 
-def normalize_username(serivce, username):
+def normalize_username(service, username):
     if service == "T":
-        return normalize_twitter(instance.username)
+        return normalize_twitter(username)
