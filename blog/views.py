@@ -29,7 +29,6 @@ def _merge_query_sets(articles, notes, links, pictures):
 
     used for Tags and Categories
     """
-    # merged = list(chain(articles, notes, links, pictures)) -> skip Entry?
     entries = []
 
     for item in list(chain(articles, notes, links, pictures)):

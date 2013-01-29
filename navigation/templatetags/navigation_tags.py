@@ -8,6 +8,9 @@ register = template.Library()
 
 @register.inclusion_tag('navigation/template-tags/navigation.html')
 def navigation(name):
-    navigation = Navigation.objects.get(name=name)
-    items = navigation.items.all()
-    return {'items': items}
+    try:
+        navigation = Navigation.objects.get(name=name)
+        items = navigation.items.all()
+        return {'items': items}
+    except:
+        return None
