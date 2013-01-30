@@ -21,12 +21,14 @@ class SocialMedia(models.Model):
     def save(self, *args, **kwargs):
         self.username = normalize_username(self.service, self.username)
         super(SocialMedia, self).save(*args, **kwargs)
-
-    def get_twitter_url(self):
-        return "https://twitter.com/{0}".format(self.username)
-
-    def get_facebook_url(self):
-        return "https://www.facebook.com/{0}".format(self.username)
+    
+    def get_absolute_url(self):
+        if self.service == 'T':
+            return "https://www.twitter.com/{0}".format(self.username)
+        if self.service == 'F':
+            return "https://www.facebook.com/{0}".format(self.username)
+        if self.service == 'B':
+            return self.username
 
 
 class Profile(models.Model):
