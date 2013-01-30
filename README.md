@@ -57,3 +57,5 @@ requirements.
 This installs both, development and deployment libraries. Development
 related apps like django-debug-toolbar are disabled in production, so
 this should not be a problem.
+
+Default database engine is PostgreSQL.
