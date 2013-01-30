@@ -11,5 +11,5 @@ def markup(text):
     """convert text to html"""
     if settings.MARKUP == "markdown":
         return _markdown(text)
-    if settings.MARKUP == "html":
+    if settings.MARKUP == "none":
         return text
