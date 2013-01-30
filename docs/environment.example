@@ -1,0 +1,20 @@
+# You should provide those environment variables for catntent.
+# This way you can move the same setup from development to
+# testing to deployment without changing anything in your
+# code. `catntent/settings.py` depends on those, so nothing
+# will work without them.
+#
+# Names match the corresponding variable in `catntent/settings.py`.
+
+DEBUG=True
+DB=postgres://user@localhost/catntent # e.x.
+MEDIAROOT=path/to/media/
+MEDIAURL=media_url
+STATICROOT=path/to/static/
+STATICURL=static_url
+SECRET="random stuff goes here"
+STATIC=static directory
+TEMPLATES=template directory
+ADMINNAME=your name
+ADMINMAIL=your mail address
+MARKUP=which markup to use
