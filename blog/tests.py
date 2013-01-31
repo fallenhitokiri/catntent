@@ -2,20 +2,13 @@
 from django.test import TestCase
 
 from blog.models import Article, Note, Link, Picture, Entry
+from blog.utils import paginate, merge_query_sets
 
 
 class ModelTestCase(TestCase):
     fixtures = ['unittest']
 
     def setUp(self):
-        """
-        Entries in DB
-        [4]: Article
-        [3]: Note
-        [2]: Link
-        [1]: Picture
-        [0]: Article
-        """
         self.entries = Entry.objects.all()
         self.article = Article.objects.all()[0]
         self.note = Note.objects.all()[0]
@@ -44,3 +37,28 @@ class ModelTestCase(TestCase):
         self.assertEqual(self.entries[1].slug, "test-picture")
         self.assertEqual(self.entries[0].slug, "unpublished-article")
         self.assertEqual(self.entries[0].published, False)
+
+
+class UtilsTest(TestCase):
+    fixtures = ['unittest']
+    
+    def test_pagination(self):
+        entries = Entry.objects.all()
+        article = Article.objects.all()[1]
+        
+        page = paginate(entries, count=1)
+        
+        self.assertFalse(page.has_previous())
+        self.assertTrue(page.has_next())
+        self.assertEqual(page.object_list[0].content_object, article)
+        self.assertEqual(page.number, 1)
+    
+    def test_merge_query_sets(self):
+        article = Article.objects.all()
+        note = Note.objects.all()
+        link = Link.objects.all()
+        picture = Picture.objects.all()
+        
+        merged = merge_query_sets(article, note, link, picture)
+        
+        self.assertEqual(len(merged), 4)
